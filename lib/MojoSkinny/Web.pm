@@ -7,7 +7,7 @@ use Mojo::Base 'Mojolicious';
 use MojoSkinny::Web::JSONRPC::Practice::Entry;
 
 use constant {
-    ENDPOINT_ENTRY => '/api/practice/entry/rpc.json',
+    ENDPOINT_ENTRY => '/jsonrpc/practice/entry.json',
 };
 
 sub startup {

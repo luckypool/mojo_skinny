@@ -7,7 +7,10 @@ use Mojo::Base 'Mojolicious::Controller';
 
 sub home {
     my $self = shift;
-    $self->render(message=>'home message');
+    $self->render(
+        title       => 'title',
+        footer_text => 'footer_text'
+    );
 }
 
 1;
