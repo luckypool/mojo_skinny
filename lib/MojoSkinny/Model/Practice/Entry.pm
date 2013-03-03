@@ -7,6 +7,9 @@ use parent qw/MojoSkinny::Model::Practice::Base/;
 
 use constant {
     TABLE_NAME => 'entry',
+    DEFAULT_LIMIT  => 30,
+    DEFAULT_OFFSET => 0,
+    DEFAULT_ORDER  => 'DESC',
 };
 
 sub table {

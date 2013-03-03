@@ -6,75 +6,131 @@ use Mojo::Base 'MojoX::JSON::RPC::Service';
 use Mojo::Exception;
 
 use Params::Validate;
-use FormValidator::Simple;
 use MojoSkinny::Model::Practice::Entry;
 
-__PACKAGE__->register_rpc_method_names( 'lookup', 'find', 'create' );
+__PACKAGE__->register_rpc_method_names( 'lookup', 'find', 'create', 'update', 'delete' );
+
+use Data::Dumper;
 
 sub lookup {
     my $self = shift;
-    my ($params) = @_;
-    my $result = FormValidator::Simple->check($params => [
-        id => [qw/NOT_BLANK UINT/],
-    ]);
-    Mojo::Exception->throw([$result->error]) if $result->has_error;
-    eval {
-        Params::Validate::validate(@$params, {
-            id => 1
-        });
-    };
-    Mojo::Exception->throw(['unnecesarry params']) if $@;
+    my $params = __validate_id(@_);
     my $model = MojoSkinny::Model::Practice::Entry->new;
-    my $find_row = $model->select_by_id({
-        id => $params->{id}
-    });
-    return $find_row;
+    return $model->select_by_id($params);
+}
+
+sub delete {
+    my $self = shift;
+    my $params = __validate_id(@_);
+    my $model = MojoSkinny::Model::Practice::Entry->new;
+    return $model->delete_by_id($params);
+}
+
+sub __validate_id {
+    return Params::Validate::validate_with(
+        params => @_,
+        spec =>  {
+            id => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^\d{1,5}$/,
+            },
+        },
+        on_fail => sub {
+            __throw(@_)
+        },
+    );
 }
 
 sub find {
     my $self = shift;
-    my ($params) = @_;
-    my $result = FormValidator::Simple->check($params => [
-        offset => [qw/UINT/],
-        limit  => [qw/UINT/],
-        order  => [[qw/IN_ARRAY DESC ASC/]],
-    ]);
-    Mojo::Exception->throw([$result->error]) if $result->has_error;
-    eval {
-        Params::Validate::validate(@$params, {
-            map { $_ => 0 } qw/offset limit order/,
-        });
-    };
-    Mojo::Exception->throw(['unnecesarry params']) if $@;
-    my $find_param = {};
-    $find_param->{offset} = $params->{offset} if defined $params->{offset};
-    $find_param->{limit}  = $params->{limit}  if defined $params->{limit};
-    $find_param->{order}  = $params->{order}  if defined $params->{order};
+    my $params = __validate_find_param(@_);
     my $model = MojoSkinny::Model::Practice::Entry->new;
-    my $find_row = $model->find($find_param);
+    my $find_row = $model->find($params);
     return $find_row;
+}
+
+sub __validate_find_param {
+    return Params::Validate::validate_with(
+        params => @_,
+        spec =>  {
+            offset => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^\d{1,3}$/,
+            },
+            limit => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^\d{1,3}$/,
+            },
+            order => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^(DESC|ASC)$/,
+            },
+        },
+        on_fail => sub {
+            __throw(@_)
+        },
+    );
 }
 
 sub create {
     my $self = shift;
-    my ($params) = @_;
-    my $result = FormValidator::Simple->check($params => [
-        nickname => [qw/NOT_BLANK/, [qw/LENGTH 1 32/]],
-        body     => [qw/NOT_BLANK/, [qw/LENGTH 1 500/]],
-    ]);
-    Mojo::Exception->throw([$result->error]) if $result->has_error;
-    eval {
-        Params::Validate::validate(@$params, {
-            map { $_ => 1 } qw/body nickname/,
-        });
-    };
-    Mojo::Exception->throw(['unnecesarry params']) if $@;
+    my $params = __validate_create_param(@_);
     my $model = MojoSkinny::Model::Practice::Entry->new;
-    $model->insert({
-        nickname => $params->{nickname},
-        body     => $params->{body},
-    });
-    return 1;
+    return $model->insert($params);
 }
 
+sub __validate_create_param {
+    return Params::Validate::validate_with(
+        params => @_,
+        spec =>  {
+            nickname => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^.{1,32}$/,
+            },
+            body => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^.{1,500}$/,
+            },
+        },
+        on_fail => sub {
+            __throw(@_)
+        },
+    );
+}
+
+sub update {
+    my $self = shift;
+    my $params = __validate_update_param(@_);
+    my $model = MojoSkinny::Model::Practice::Entry->new;
+    return $model->update($params);
+}
+
+sub __validate_update_param {
+    return Params::Validate::validate_with(
+        params => @_,
+        spec =>  {
+            id => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^\d{1,5}$/,
+            },
+            nickname => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^.{1,32}$/,
+            },
+            body => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^.{1,500}$/,
+            },
+        },
+        on_fail => sub {
+            __throw(@_)
+        },
+    );
+}
+
+
+sub __throw {
+    my $message = shift;
+    Mojo::Exception->throw([$message]);
+}
 1;

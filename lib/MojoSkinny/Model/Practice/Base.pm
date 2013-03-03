@@ -46,11 +46,11 @@ sub select_by_id {
 
 sub update {
     my $self = shift;
-    my %params_with_id = @_;
-    my $id = $params_with_id{id};
-    delete $params_with_id{id};
-    my @basic_param = %params_with_id;
-    my $params = $self->validate_basic_params(@basic_param);
+    my $params_with_id = shift;
+    my $id = $params_with_id->{id};
+    delete $params_with_id->{id};
+    my $basic_param = {%$params_with_id};
+    my $params = $self->validate_basic_params($basic_param);
     return $self->master->update(
         $self->table,
         $self->get_update_params($params),
