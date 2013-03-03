@@ -9,16 +9,24 @@ use MojoSkinny::Test::DB qw/DB_PRACTICE/;
 
 use Date::Calc qw/Localtime/;
 
-# for debug
-use Devel::Peek qw/Dump/;
-use Data::Dumper;
-
 my $class;
 BEGIN {
     use_ok($class='MojoSkinny::Model::Practice::Entry');
 }
 
 my $obj = new_ok $class;
+
+# for debug
+use Devel::Peek qw/Dump/;
+use Data::Dumper;
+$obj->master->reset_query_log;
+$obj->slave->reset_query_log;
+sub __show_query_log {
+    warn Data::Dumper::Dumper $obj->master->query_log;
+    warn Data::Dumper::Dumper $obj->slave->query_log;
+    $obj->master->reset_query_log;
+    $obj->slave->reset_query_log;
+}
 
 # --
 # Utils
