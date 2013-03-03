@@ -35,9 +35,7 @@ sub __validate_id {
                 regex   => qr/^\d{1,5}$/,
             },
         },
-        on_fail => sub {
-            __throw(@_)
-        },
+        on_fail => sub { __throw(@_) },
     );
 }
 
@@ -66,9 +64,7 @@ sub __validate_find_param {
                 regex   => qr/^(DESC|ASC)$/,
             },
         },
-        on_fail => sub {
-            __throw(@_)
-        },
+        on_fail => sub { __throw(@_) },
     );
 }
 
@@ -92,9 +88,7 @@ sub __validate_create_param {
                 regex   => qr/^.{1,500}$/,
             },
         },
-        on_fail => sub {
-            __throw(@_)
-        },
+        on_fail => sub { __throw(@_) },
     );
 }
 
