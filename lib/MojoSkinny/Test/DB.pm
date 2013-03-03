@@ -32,25 +32,11 @@ sub import {
     }
 }
 
-=encode utf8
+=encoding utf8
 
 =head1 NAME
 
 MojoSkinny::Test::DB
-
-=head1 DESCRIPTION
-
-MojoSkinny::DB::Skinny::* のものを new する際に
-db-schema 以下に作られた sql ファイルの内容として扱う
-ただし、
-
-=over 2
-
-=item * DB_HOGE.sql には hoge という dbname が対応する
-
-=item * DB_HOGE.sql の名前に対して MojoSkinny::DB::Skinny::Hoge が対応する
-
-=back
 
 =head1 SYNOPSIS
 
