@@ -47,6 +47,7 @@ sub select_by_id {
 sub update {
     my $self = shift;
     my $params_with_id = shift;
+    die unless defined $params_with_id->{id};
     my $id = $params_with_id->{id};
     delete $params_with_id->{id};
     my $basic_param = {%$params_with_id};
