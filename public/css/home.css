@@ -1,0 +1,192 @@
+/*
+ * home.css
+ */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { 
+    display: block;
+}
+
+body {
+    background: #eee;
+    color: #777;
+    font-size: 12px;
+    font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+img.logo {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.shadow {
+    -webkit-filter: drop-shadow(0 0px 2px rgba(0,0,0,.5));
+    -moz-filter: drop-shadow(0 0px 2px rgba(0,0,0,.5));
+    filter: drop-shadow(0 0px 2px rgba(0,0,0,.5));
+}
+
+/* --- contents area ---- */
+div#contents_area_base {
+    width: 90%;
+    margin: 0 auto;
+}
+
+div#contents_area_base header {
+    height: auto;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+}
+
+div#contents_area_base header p {
+    margin: 0 auto;
+}
+
+div#contents_area_base footer {
+    height: auto;
+    width: 100%;
+    padding: 20px 0;
+    color: #777;
+    text-align: left;
+    clear:both;
+}
+
+div#contents_area_main {
+    padding: 0;
+    overflow: auto;
+}
+
+hr.clear {
+    width: 90%;
+    margin: auto;
+    border: 0;
+    clear:both;
+}
+
+/* ---- template ---- */
+div#container_template {
+    display:none;
+}
+
+/* --- container ---- */
+div.container {
+    width:100%;
+    height: auto;
+    background: #fff;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d7af45;
+}
+
+div.left {
+    float:left;
+}
+
+div.small {
+    margin-right: 10px;
+    margin-left: 0;
+    width: 300px;
+}
+
+
+/* --- container accesory ---- */
+
+div.container .title {
+    font-size: 14px;
+    word-break:break-all;
+    margin: 0;
+    padding: 10px 20px 0 20px;
+    border-top: 10px solid #d7af45;
+    color: #d7af45;
+}
+
+div.container .body {
+    margin: 0 20px;
+    padding: 10px 0 10px 0;
+}
+
+div.container .body .detail {
+    margin: 0;
+    padding: 10px 0;
+    color: #777;
+}
+
+div.container .body ul.property {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    border-top: 1px solid #ccc;
+}
+
+div.container .body ul.property li {
+    margin-top: 10px;
+    height:auto;
+    width: auto;
+    float: right;
+    margin-left: 20px;
+}
+
+div.container .body .footer {
+    clear:both;
+    width: 100%;
+    margin: 10px 0 0 0;
+    text-align: right;
+}
+div.container .body .footer a{
+    text-decoration:none;
+    color: #777;
+}
+
+div.container .body .percentage {
+    clear:both;
+    margin 0 auto;
+    padding: 10px 0;
+}
+
+a.category_label {
+    border: 0;
+    padding: 3px 5px;
+    background: #d7af45;
+    color: #fff;
+    text-decoration:none;
+}
+
+
+/* ----- media queries ----- */
+@media screen and (max-width: 980px) {
+    body {
+        font-size: 14px;
+    }
+    h2 {
+        font-size: 18px;
+    }
+    div.small {
+        margin: 20px auto;
+        width: 100%;
+        float: none;
+    }
+    div#contents_area_base {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    div.small {
+        margin: 20px auto;
+        width: 100%;
+        float: none;
+    }
+    div#contents_area_base {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+

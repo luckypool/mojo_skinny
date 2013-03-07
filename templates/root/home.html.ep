@@ -1,0 +1,19 @@
+% layout 'root/home';
+
+<div id="contents_area_main"></div>
+<script type="text/javascript" src="js/home.js"></script>
+
+<!-- begin: TEMPLATE -->
+<div id="container_template">
+  <div class="container small left">
+    <h4 class="title">${nickName}</h4>
+    <div class="body">
+      <p class="detail">${detail}</p>
+      <ul class="property">
+        <li>${createdAt}</li>
+      </ul>
+      <div class="footer">#${entryId}</div>
+    </div>
+  </div>
+</div>
+<!-- end: TEMPLATE -->

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/home.css" type="text/css" media="screen" charset="utf-8" />
+  <script type="text/javascript" src="js/lib/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.tmpl.min.js"></script>
+  <title><%= title %></title>
+</head>
+<body>
+<div id="contents_area_base">
+  <header>
+    <a href="/"><img class="logo" src="img/logo.png" alt="logo" height="30px" /></a>
+  </header>
+
+  <%= content %>
+
+  <footer><%= $footer_text %></footer>
+</div>
+</body>
+</html>
