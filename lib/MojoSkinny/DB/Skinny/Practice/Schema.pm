@@ -37,7 +37,7 @@ install_inflate_rule '^.+_at$' => callback {
 install_utf8_columns qw/nickname body/;
 install_table entry => schema {
     pk 'id';
-    columns qw/id nickname body created_at updated_at/;
+    columns qw/id nickname body tag_id created_at updated_at/;
     trigger pre_insert => \&pre_insert_hook;
     trigger pre_update => \&pre_update_hook;
 };

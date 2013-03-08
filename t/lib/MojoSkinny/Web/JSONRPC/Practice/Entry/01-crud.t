@@ -21,6 +21,7 @@ subtest q/crud/ => sub {
         __post('create', {
             nickname => 'dummy nickname',
             body => 'dummy bodybodybody',
+            tag_id => 1,
         });
         ok $expecting_entry = $test_web->tx->res->json->{result};
     };
@@ -50,6 +51,7 @@ subtest q/crud/ => sub {
             id => $expecting_entry->{id},
             nickname => $expecting_entry->{nickname},
             body => $expecting_entry->{body},
+            tag_id => $expecting_entry->{tag_id},
         });
         my $expects = {
             jsonrpc => '2.0',

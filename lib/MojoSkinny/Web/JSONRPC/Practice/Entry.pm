@@ -85,7 +85,11 @@ sub __validate_create_param {
             },
             body => {
                 type    => Params::Validate::SCALAR,
-                regex   => qr/^.{1,500}$/,
+                regex   => qr/^.{1,1000}$/,
+            },
+            tag_id => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^\d{1,3}$/,
             },
         },
         on_fail => sub { __throw(@_) },
@@ -114,6 +118,10 @@ sub __validate_update_param {
             body => {
                 type    => Params::Validate::SCALAR,
                 regex   => qr/^.{1,500}$/,
+            },
+            tag_id => {
+                type    => Params::Validate::SCALAR,
+                regex   => qr/^\d{1,3}$/,
             },
         },
         on_fail => sub {

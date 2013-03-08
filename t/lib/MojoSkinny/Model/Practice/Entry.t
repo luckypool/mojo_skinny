@@ -41,6 +41,7 @@ sub __create_dummy_data {
     return {
         nickname  => "nickname:$id",
         body      => qq{bodyボディ本文だああああああああ$id},
+        tag_id    => int rand 10,
     };
 }
 
@@ -78,7 +79,7 @@ subtest q/crud/ => sub {
         $expecting->{created_at} = __time_to_mysqldatetime($now);
         $expecting->{updated_at} = __time_to_mysqldatetime($update_time);
         ok $obj->update({
-            map { $_ => $expecting->{$_} } qw/id nickname body/
+            map { $_ => $expecting->{$_} } qw/id tag_id nickname body/
         });
         my $row = $obj->select_by_id(id=>1);
         cmp_deeply $expecting, $row;

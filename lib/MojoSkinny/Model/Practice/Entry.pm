@@ -21,6 +21,7 @@ sub validate_basic_params {
     return Params::Validate::validate(@_, {
         nickname => { type  => Params::Validate::SCALAR },
         body     => { type  => Params::Validate::SCALAR },
+        tag_id   => { type  => Params::Validate::SCALAR },
     });
 }
 
