@@ -10,8 +10,6 @@ use MojoSkinny::Model::Practice::Entry;
 
 __PACKAGE__->register_rpc_method_names( 'lookup', 'find', 'create', 'update', 'delete' );
 
-use Data::Dumper;
-
 sub lookup {
     my $self = shift;
     my $params = __validate_id(@_);
