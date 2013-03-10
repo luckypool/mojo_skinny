@@ -1,10 +1,13 @@
 (function(){
 
     var FIND_REQUEST_PARAMS = {
-        limit  : 12,
+        limit  : 6,
         offset : 0,
         order  : "DESC"
     };
+    var tag1 = '';
+    var tag2 = '';
+    var tag3 = '';
 
     function Background(){
         this.initialize.apply(this, arguments);
@@ -26,16 +29,16 @@
             this.view.assignShowMoreButton('showMore','もっと見る');
             this.assignShowMoreEvent('showMore');
 
-            this.view.assignPostButton('postTag1','あああああああああああ');
-            this.view.assignModalWindow('postTag1',1,"ああああああ","ああ");
+            this.view.assignPostButton('postTag1',tag1);
+            this.view.assignModalWindow('postTag1',1,tag1,"");
             this.assignPostEvent('postTag1');
 
-            this.view.assignPostButton('postTag2','いいいいいいいいいいい');
-            this.view.assignModalWindow('postTag2',2,"いいい1","iii");
+            this.view.assignPostButton('postTag2',tag2);
+            this.view.assignModalWindow('postTag2',2,tag2,"");
             this.assignPostEvent('postTag2');
 
-            this.view.assignPostButton('postTag3','ううううううううううう');
-            this.view.assignModalWindow('postTag3',3,"Ultuuuuu","uuuu");
+            this.view.assignPostButton('postTag3',tag3);
+            this.view.assignModalWindow('postTag3',3,tag3,"");
             this.assignPostEvent('postTag3');
 
             $('a[rel*=leanModal]').leanModal();
@@ -47,9 +50,12 @@
                 _self.getRemainedEntries(idName)
                 .done(function(entries){
                     $.each(entries, function(i, entry){
-                        _self.view.appendEntity(new Entity(entry));
+                        var newEntity = _self.view.appendEntity(new Entity(entry));
+                        _self.assignDeleteEvent(newEntity);
                     });
                     $('#'+idName).removeAttr("disabled");
+                }).fail(function(){
+                    $('#'+idName).text("すべて読み込みました");
                 });
             });
         },
@@ -65,7 +71,7 @@
                 if(res-6<0){
                     params.limit  = res;
                     params.offset = 0;
-                    $('#'+idName).attr("disabled","disabled").text("すべて読み込みました");
+                    $('#'+idName).text("すべて読み込みました");
                 }
                 _self.model.find.request(params).done(function(res){
                     if(res.error){
@@ -74,20 +80,21 @@
                         df.resolve(res.result.reverse());
                     }
                 });
+            }).fail(function(){
+                df.reject();
             });
             return df.promise();
         },
         getRemainedEntryCount:function(){
             var df = $.Deferred();
-            var currentCount = $('#contents_area_main').find('.container').size();
-            this.model.count.request({})
-            .done(function(res){
-                if(res.error){
-                    df.reject(res.error);
-                } else {
-                    var remained = res.result - currentCount;
-                    remained <= 0 ? df.reject() : df.resolve(remained);
+            var currentCount = parseInt($('#contents_area_main').find('.container').size(), 10);
+            this.model.count.request({}).done(function(res){
+                if(res.result){
+                    var remained = parseInt(res.result,10) - currentCount;
+                    if(remained <= 0) df.reject();
+                    else df.resolve(remained);
                 }
+                else df.reject();
             });
             return df.promise();
         },
@@ -106,12 +113,12 @@
                 $("#loading_overlay").show();
                 _self.postEntry(elements)
                 .done(function(res){
-                    _self.view.prependEntity(new Entity(res));
+                    var newEntity = _self.view.prependEntity(new Entity(res));
+                    _self.assignDeleteEvent(newEntity);
                     elements.nickname.val("名無しさん");
                     elements.body.val("");
                 }).fail(function(res){
-                    console.log(res);
-                    alert(res.error.message);
+                    alert(res);
                 }).always(function(){
                     elements.nickname.removeAttr("disabled");
                     elements.submit.removeAttr("disabled");
@@ -123,13 +130,17 @@
         },
         postEntry:function(elements){
             var df = $.Deferred();
+            if(elements.body.val().length == 0){
+                df.reject("本文が未入力です");
+            }
             this.model.create.request({
-                nickname: elements.nickname.val(),
+                nickname: escapeHTML(elements.nickname.val()),
                 body    : escapeHTML(elements.body.val()),
                 tag_id  : elements.tag.val()
             }).done(function(response){
                 if("error" in response){
-                    df.reject(response);
+                    console.log(response);
+                    df.reject(response.error.message);
                 } else {
                     df.resolve(response.result);
                 }
@@ -141,10 +152,28 @@
             this.model.find.request(FIND_REQUEST_PARAMS)
             .done(function(response){
                 $.each(response.result, function(i, entry){
-                    _self.view.appendEntity(new Entity(entry));
+                    var newEntity = _self.view.appendEntity(new Entity(entry));
+                    _self.assignDeleteEvent(newEntity);
                 });
             });
+        },
+        assignDeleteEvent:function(target){
+            var _self = this;
+            target.find('.delete').click(function(evt){
+                var id = $(evt.target).data("id");
+                if(window.confirm('削除しますか？')){
+                    _self.model.delete.request({id:id}).done(function(response){
+                        if(response.result){
+                            $(evt.target).closest('.container').remove();
+                            $('#contents_area_main').masonry('reload');
+                        } else {
+                            console.log(resuponse.error);
+                        }
+                    });
+                }
+            });
         }
+
     };
 
     function escapeHTML(str) {
@@ -157,12 +186,11 @@
     View.prototype = {
         initialize:function(arguments) {
             var baseHtml = $('#container_template').html();
-            var linkHtml = '<a class="css_btn_class" >${buttonText}</a>';
-            var buttonHtml = '<button class="css_btn_class" type="button">${buttonText}</button>';
+            var buttonHtml = '<a class="css_btn_class" >${buttonText}</a>';
             var modalWindowHtml = $('#post_template').html();
             $.template("containerTemplate", baseHtml);
             $.template("buttonTemplate", buttonHtml);
-            $.template("postLinkTemplate", linkHtml);
+            $.template("postLinkTemplate", buttonHtml);
             $.template("modalWindowTemplate", modalWindowHtml);
         },
         assignModalWindow:function(id,tagId,title,body){
@@ -187,14 +215,15 @@
                 isAnimated:true,
                 animationOptions:{duration:400}
             }).prepend(newEntity).masonry('reload');
+            return newEntity;
         },
         appendEntity:function(entity){
-            var _self = this;
             var newEntity = $.tmpl("containerTemplate", entity);
             $('#contents_area_main').masonry({
                 isAnimated:true,
                 animationOptions:{duration:400}
             }).append(newEntity).masonry('reload');
+            return newEntity;
         }
     };
 
@@ -247,8 +276,14 @@
             this.entryId    = arguments.id;
             this.nickName   = arguments.nickname;
             this.createdAt  = arguments.created_at;
-            this.tag        = arguments.tag_id;
+            this.tag        = this.id2tag(arguments.tag_id);
             this.detailHtml = arguments.body.replace(/\n/g,'<br/>');
+        },
+        id2tag:function(id){
+            if(id == 1) return tag1;
+            else if(id == 2) return tag2;
+            else if(id == 3) return tag3;
+            else return id;
         }
     };
 

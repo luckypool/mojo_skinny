@@ -19,7 +19,9 @@
 
   <div id="contents_area_base">
     <header>
-      <a href="/"><img class="logo" src="img/logo.png" alt="logo" /></a>
+      <div class="logo">
+        <a href="/"><img src="img/logo.png" alt="logo" /></a>
+      </div>
     </header>
 
     <%= content %>
@@ -36,9 +38,10 @@
           <p class="tag">${tag}</p>
           <p class="detail">{{html detailHtml}}</p>
           <ul class="property">
+            <li>#${entryId}</li>
             <li>${createdAt}</li>
           </ul>
-          <div class="footer">#${entryId}</div>
+          <div class="footer"><a href="javascript:void(0);" class="delete" data-id="${entryId}">削除</a></div>
         </div>
       </div>
     </div>
@@ -47,7 +50,7 @@
         <h4 class="title">${title}</h4>
         <input class="input-text" id="${id}-nickname" type="text" placeholder="<a>名無しさん</a>" value="<a>名無しさん</a>"/>
         <textarea class="input-text" id="${id}-body" placeholder="${bodyPlaceholder}" cols="30"></textarea>
-        <a href="javascript:void(0);" class="css_btn_class" id="${id}-submit" >送信する</a>
+        <a href="javascript:void(0);" class="css_btn_class" id="${id}-submit" >submit</a>
         <input type="hidden" id="${id}-tag" value="${tagId}"/>
       </div>
     </div>

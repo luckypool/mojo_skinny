@@ -22,10 +22,14 @@ h3 {
     font-size: 18px;
 }
 
-img.logo {
+.logo {
     margin-top: 30px;
     margin-bottom: 10px;
+    padding: 0;
+}
+.logo img {
     height:30px;
+    margin-right:5px;
 }
 
 .shadow {
