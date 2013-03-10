@@ -3,20 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/home.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="css/home.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="css/buttons.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="css/leanmodal.css" type="text/css" media="screen" />
   <script type="text/javascript" src="js/lib/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="js/lib/jquery.tmpl.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.masonry.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.leanModal.min.js"></script>
+  <script type="text/javascript" src="js/home.js"></script>
   <title><%= title %></title>
 </head>
 <body>
-<div id="contents_area_base">
-  <header>
-    <a href="/"><img class="logo" src="img/logo.png" alt="logo" height="30px" /></a>
-  </header>
 
-  <%= content %>
+  <div id="loading_overlay"><div id="loader"></div></div>
 
-  <footer><%= $footer_text %></footer>
-</div>
+  <div id="contents_area_base">
+    <header>
+      <a href="/"><img class="logo" src="img/logo.png" alt="logo" /></a>
+    </header>
+
+    <%= content %>
+
+    <footer><%= $footer_text %></footer>
+  </div>
+
+  <!-- begin: TEMPLATE -->
+  <div id="templates">
+    <div id="container_template">
+      <div class="container small left">
+        <h4 class="title">${nickName}</h4>
+        <div class="body">
+          <p class="tag">${tag}</p>
+          <p class="detail">{{html detailHtml}}</p>
+          <ul class="property">
+            <li>${createdAt}</li>
+          </ul>
+          <div class="footer">#${entryId}</div>
+        </div>
+      </div>
+    </div>
+    <div id="post_template">
+      <div class="modal_window">
+        <h4 class="title">${title}</h4>
+        <input class="input-text" id="${id}-nickname" type="text" placeholder="<a>名無しさん</a>" value="<a>名無しさん</a>"/>
+        <textarea class="input-text" id="${id}-body" placeholder="${bodyPlaceholder}" cols="30"></textarea>
+        <a href="javascript:void(0);" class="css_btn_class" id="${id}-submit" >送信する</a>
+        <input type="hidden" id="${id}-tag" value="${tagId}"/>
+      </div>
+    </div>
+  </div>
+  <!-- end: TEMPLATE -->
+
 </body>
 </html>
