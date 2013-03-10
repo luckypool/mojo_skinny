@@ -1,0 +1,61 @@
+/*
+ * leanmodal.css
+ */
+#lean_overlay {
+    position: fixed;
+    z-index: 10000;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+
+.modal_window {
+    display:none;
+    padding: 30px;
+    width: 50%;
+    background: #fff;
+    -webkit-border-radius: 3px;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.5);
+}
+
+.modal_window p { color: #666; text-shadow: none; }
+
+.input-text {
+    display:block;
+    padding: 10px;
+    margin: 5px auto;
+    padding: 10px 2%;
+    width: 96%;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 7px rgba(0, 0, 0, 0.1);
+}
+
+.input-text:focus {
+    outline: none;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+textarea {
+    height: 200px;
+}
+
+.modal_window a { 
+    display:block;
+    margin: 5px auto;
+    text-align:center;
+}
+
+.modal_window .title {
+    color: #d7af45;
+}
+
+@media screen and (max-width: 640px) {
+    .modal_window {
+        width: 80%;
+        padding: 30px;
+    }
+}

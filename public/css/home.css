@@ -2,12 +2,13 @@
  * home.css
  */
 
+/* base */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { 
     display: block;
 }
 
 body {
-    background: #eee;
+    background: #eee url('../img/linedpaper.png') repeat;
     color: #777;
     font-size: 12px;
     font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
@@ -24,6 +25,7 @@ h3 {
 img.logo {
     margin-top: 30px;
     margin-bottom: 10px;
+    height:30px;
 }
 
 .shadow {
@@ -71,7 +73,7 @@ hr.clear {
 }
 
 /* ---- template ---- */
-div#container_template {
+div#templates {
     display:none;
 }
 
@@ -83,6 +85,8 @@ div.container {
     margin-top: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid #d7af45;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
 
 div.left {
@@ -110,6 +114,12 @@ div.container .title {
 div.container .body {
     margin: 0 20px;
     padding: 10px 0 10px 0;
+}
+
+div.container .body .tag {
+    margin: 0;
+    padding: 5px 0;
+    color: #777;
 }
 
 div.container .body .detail {
@@ -158,6 +168,37 @@ a.category_label {
     text-decoration:none;
 }
 
+/* ----- loader -----
+ * by http://www.html5-memo.com/webtips/css3-loading/ 
+ */
+#loader {
+    display:block;
+    margin: 200px auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 10px solid #d7af45;
+    border-right-color: transparent;
+    -webkit-animation: spin 0.5s infinite linear;
+    -webkit-backface-visibility:hidden;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); opacity: 0.4; }
+    50%  { -webkit-transform: rotate(180deg); opacity: 1; }
+    100%   { -webkit-transform: rotate(360deg); opacity: 0.4; }
+}
+
+#loading_overlay {
+    position: fixed;
+    z-index: 20000;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+}
 
 /* ----- media queries ----- */
 @media screen and (max-width: 980px) {
