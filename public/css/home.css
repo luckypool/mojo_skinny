@@ -130,6 +130,7 @@ div.container .body .detail {
     margin: 0;
     padding: 10px 0;
     color: #777;
+    word-break:break-all;
 }
 
 div.container .body ul.property {

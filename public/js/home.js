@@ -130,21 +130,24 @@
         },
         postEntry:function(elements){
             var df = $.Deferred();
-            if(elements.body.val().length == 0){
+            if(elements.nickname.val().length == 0){
+                df.reject("お名前が未入力です");
+            }else if(elements.body.val().length == 0){
                 df.reject("本文が未入力です");
+            }else{
+                this.model.create.request({
+                    nickname: escapeHTML(elements.nickname.val()),
+                    body    : escapeHTML(elements.body.val()),
+                    tag_id  : elements.tag.val()
+                }).done(function(response){
+                    if("error" in response){
+                        console.log(response);
+                        df.reject(response.error.message);
+                    } else {
+                        df.resolve(response.result);
+                    }
+                });
             }
-            this.model.create.request({
-                nickname: escapeHTML(elements.nickname.val()),
-                body    : escapeHTML(elements.body.val()),
-                tag_id  : elements.tag.val()
-            }).done(function(response){
-                if("error" in response){
-                    console.log(response);
-                    df.reject(response.error.message);
-                } else {
-                    df.resolve(response.result);
-                }
-            });
             return df.promise();
         },
         loadInitialContents:function(){
@@ -207,6 +210,7 @@
         assignShowMoreButton:function(idName, buttonText){
             $.tmpl("buttonTemplate", {buttonText:buttonText})
             .attr("id",idName)
+            .attr("href","javascript:void(0);")
             .appendTo("#contents_area_bottom");
         },
         prependEntity:function(entity){
