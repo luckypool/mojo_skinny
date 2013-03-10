@@ -12,9 +12,8 @@ use constant {
     DEFAULT_ORDER  => 'DESC',
 };
 
-sub table {
-    return TABLE_NAME;
-};
+sub table { TABLE_NAME }
+sub primary_key { q/id/ }
 
 sub validate_basic_params {
     my $self = shift;

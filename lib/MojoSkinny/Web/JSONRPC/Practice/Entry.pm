@@ -8,20 +8,23 @@ use Mojo::Exception;
 use Params::Validate;
 use MojoSkinny::Model::Practice::Entry;
 
-__PACKAGE__->register_rpc_method_names( 'lookup', 'find', 'create', 'update', 'delete' );
+__PACKAGE__->register_rpc_method_names( 'lookup', 'find', 'count', 'create', 'update', 'delete' );
+
+sub count {
+    my $self = shift;
+    return MojoSkinny::Model::Practice::Entry->new->get_count;
+}
 
 sub lookup {
     my $self = shift;
     my $params = __validate_id(@_);
-    my $model = MojoSkinny::Model::Practice::Entry->new;
-    return $model->select_by_id($params);
+    return MojoSkinny::Model::Practice::Entry->new->select_by_id($params);
 }
 
 sub delete {
     my $self = shift;
     my $params = __validate_id(@_);
-    my $model = MojoSkinny::Model::Practice::Entry->new;
-    return $model->delete_by_id($params);
+    return MojoSkinny::Model::Practice::Entry->new->delete_by_id($params);
 }
 
 sub __validate_id {
@@ -40,9 +43,7 @@ sub __validate_id {
 sub find {
     my $self = shift;
     my $params = __validate_find_param(@_);
-    my $model = MojoSkinny::Model::Practice::Entry->new;
-    my $find_row = $model->find($params);
-    return $find_row;
+    return MojoSkinny::Model::Practice::Entry->new->find($params);
 }
 
 sub __validate_find_param {
@@ -69,8 +70,7 @@ sub __validate_find_param {
 sub create {
     my $self = shift;
     my $params = __validate_create_param(@_);
-    my $model = MojoSkinny::Model::Practice::Entry->new;
-    return $model->insert($params);
+    return  MojoSkinny::Model::Practice::Entry->new->insert($params);
 }
 
 sub __validate_create_param {
@@ -83,7 +83,7 @@ sub __validate_create_param {
             },
             body => {
                 type    => Params::Validate::SCALAR,
-                regex   => qr/^.{1,1000}$/,
+                regex   => qr/^(.|\n){1,500}$/,
             },
             tag_id => {
                 type    => Params::Validate::SCALAR,
@@ -97,8 +97,7 @@ sub __validate_create_param {
 sub update {
     my $self = shift;
     my $params = __validate_update_param(@_);
-    my $model = MojoSkinny::Model::Practice::Entry->new;
-    return $model->update($params);
+    return MojoSkinny::Model::Practice::Entry->new->update($params);
 }
 
 sub __validate_update_param {
@@ -115,7 +114,7 @@ sub __validate_update_param {
             },
             body => {
                 type    => Params::Validate::SCALAR,
-                regex   => qr/^.{1,500}$/,
+                regex   => qr/^(.|\n){1,500}$/,
             },
             tag_id => {
                 type    => Params::Validate::SCALAR,
@@ -127,7 +126,6 @@ sub __validate_update_param {
         },
     );
 }
-
 
 sub __throw {
     my $message = shift;

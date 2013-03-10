@@ -18,6 +18,9 @@ sub new {
     return bless $self, $class;
 }
 
+sub table { die q/override me!/ };
+sub primary_key { die q/override me!/ };
+
 # --
 # common functions
 sub insert {
@@ -73,6 +76,11 @@ sub exists {
     my $self = shift;
     my $row = $self->select_by_id(@_);
     return defined $row ? 1 : 0;
+}
+
+sub get_count {
+    my $self = shift;
+    return $self->slave->count($self->table, $self->primary_key, {});
 }
 
 1;

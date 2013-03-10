@@ -59,7 +59,7 @@ subtest q/crud/ => sub {
         cmp_deeply $row, $expecting;
     };
 
-    subtest q/read/ => sub {
+    subtest q/select_by_id/ => sub {
         my $expecting = {%$dummy_data1};
         $expecting->{id} = 1;
         $expecting->{created_at} = __time_to_mysqldatetime($now);
@@ -68,6 +68,12 @@ subtest q/crud/ => sub {
         my $row = $obj->select_by_id({id=>$expecting->{id}});
         ok $row;
         cmp_deeply $expecting, $row;
+    };
+
+    subtest q/count/ => sub {
+        my $row = $obj->get_count;
+        ok $row;
+        is $row, 1;
     };
 
     subtest q/update/ => sub {

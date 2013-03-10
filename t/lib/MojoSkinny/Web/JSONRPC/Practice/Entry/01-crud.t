@@ -38,6 +38,16 @@ subtest q/crud/ => sub {
         cmp_deeply $expects, $test_web->tx->res->json, q/json ok/;
     };
 
+    subtest q/count/ => sub {
+        __post('count');
+        my $expects = {
+            jsonrpc => '2.0',
+            id => 1,
+            result => 1,
+        };
+        cmp_deeply $expects, $test_web->tx->res->json, q/json ok/;
+    };
+
     # fix updated_at
     my $today_and_now = [Today_and_Now()];
     my $now = Mktime(@$today_and_now);
@@ -94,12 +104,13 @@ subtest q/crud/ => sub {
 
 sub __post {
     my ($method, $params) = @_;
+    my $request_params = $params ? $params : {};
     $test_web->post_ok(
         '/jsonrpc/practice/entry.json',
         json => {
             jsonrpc => '2.0',
             method  => $method,
-            params  => $params,
+            params  => $request_params,
             id => 1,
         })
     ->status_is(200)

@@ -19,6 +19,7 @@ subtest q/find/ => sub {
         [ map {+{
             nickname => "nick: $_",
             body => "body: $_",
+            tag_id => $_,
         }} (1..30) ],
     );
     my $expecting_entries = [ map {
